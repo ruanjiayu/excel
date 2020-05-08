@@ -2,9 +2,11 @@ package com.fun.uncle.excel.controller;
 
 import com.alibaba.excel.EasyExcel;
 import com.fun.uncle.excel.dao.DemoDAO;
+import com.fun.uncle.excel.dto.ConverterDataDTO;
 import com.fun.uncle.excel.dto.DownloadExcelDTO;
+import com.fun.uncle.excel.dto.IndexOrNameData;
 import com.fun.uncle.excel.dto.PersonExcelDTO;
-import com.fun.uncle.excel.listener.PersonExcelListener;
+import com.fun.uncle.excel.listener.ExcelListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,9 +34,21 @@ public class ExcelController {
     @Autowired
     private DemoDAO demoDAO;
 
-    @PostMapping("upload")
+    @PostMapping("upload/person")
     public String upload(MultipartFile file) throws IOException {
-        EasyExcel.read(file.getInputStream(), PersonExcelDTO.class, new PersonExcelListener(demoDAO)).sheet().doRead();
+        EasyExcel.read(file.getInputStream(), PersonExcelDTO.class, new ExcelListener(demoDAO)).sheet().doRead();
+        return "success";
+    }
+
+    @PostMapping("upload/indexOrNumber")
+    public String uploadIndexOrNumber(MultipartFile file) throws IOException {
+        EasyExcel.read(file.getInputStream(), IndexOrNameData.class, new ExcelListener(demoDAO)).sheet().doRead();
+        return "success";
+    }
+
+    @PostMapping("upload/converter")
+    public String uploadConverter(MultipartFile file) throws IOException {
+        EasyExcel.read(file.getInputStream(), ConverterDataDTO.class, new ExcelListener(demoDAO)).sheet().headRowNumber(0).doRead();
         return "success";
     }
 
@@ -47,7 +60,7 @@ public class ExcelController {
         // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
         String fileName = URLEncoder.encode("测试", "UTF-8");
         response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
-        EasyExcel.write(response.getOutputStream(), DownloadExcelDTO.class).sheet("模板").doWrite(data());
+        EasyExcel.write(response.getOutputStream(), DownloadExcelDTO.class).sheet("模板").needHead(false).doWrite(data());
     }
 
 

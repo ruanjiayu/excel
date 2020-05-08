@@ -4,7 +4,6 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.fastjson.JSON;
 import com.fun.uncle.excel.dao.DemoDAO;
-import com.fun.uncle.excel.dto.PersonExcelDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,23 +16,23 @@ import java.util.List;
  * @DateTime: 2020/5/7 11:00 上午
  * @Version: 0.0.1-SNAPSHOT
  */
-public class PersonExcelListener extends AnalysisEventListener<PersonExcelDTO> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(PersonExcelListener.class);
+public class ExcelListener<T, B extends DemoDAO<T>> extends AnalysisEventListener<T> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExcelListener.class);
     /**
      * 每隔5条存储数据库，实际使用中可以3000条，然后清理list ，方便内存回收
      */
-    private static final int BATCH_COUNT = 5;
-    List<PersonExcelDTO> list = new ArrayList<PersonExcelDTO>();
+    private static final int BATCH_COUNT = 20;
+    List<T> list = new ArrayList<T>();
     /**
      * 假设这个是一个DAO，当然有业务逻辑这个也可以是一个service。当然如果不用存储这个对象没用。
      */
-    private DemoDAO demoDAO;
+    private B demoDAO;
     /**
      * 如果使用了spring,请使用这个构造方法。每次创建Listener的时候需要把spring管理的类传进来
      *
      * @param demoDAO
      */
-    public PersonExcelListener(DemoDAO demoDAO) {
+    public ExcelListener(B demoDAO) {
         this.demoDAO = demoDAO;
     }
     /**
@@ -44,7 +43,7 @@ public class PersonExcelListener extends AnalysisEventListener<PersonExcelDTO> {
      * @param context
      */
     @Override
-    public void invoke(PersonExcelDTO data, AnalysisContext context) {
+    public void invoke(T data, AnalysisContext context) {
         LOGGER.info("解析到一条数据:{}", JSON.toJSONString(data));
         list.add(data);
         // 达到BATCH_COUNT了，需要去存储一次数据库，防止数据几万条数据在内存，容易OOM
