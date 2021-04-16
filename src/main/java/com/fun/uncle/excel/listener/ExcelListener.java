@@ -27,6 +27,7 @@ public class ExcelListener<T, B extends DemoDAO<T>> extends AnalysisEventListene
      * 假设这个是一个DAO，当然有业务逻辑这个也可以是一个service。当然如果不用存储这个对象没用。
      */
     private B demoDAO;
+
     /**
      * 如果使用了spring,请使用这个构造方法。每次创建Listener的时候需要把spring管理的类传进来
      *
@@ -35,11 +36,11 @@ public class ExcelListener<T, B extends DemoDAO<T>> extends AnalysisEventListene
     public ExcelListener(B demoDAO) {
         this.demoDAO = demoDAO;
     }
+
     /**
      * 这个每一条数据解析都会来调用
      *
-     * @param data
-     *            one row value. Is is same as {@link AnalysisContext#readRowHolder()}
+     * @param data    one row value. Is is same as {@link AnalysisContext#readRowHolder()}
      * @param context
      */
     @Override
@@ -53,6 +54,7 @@ public class ExcelListener<T, B extends DemoDAO<T>> extends AnalysisEventListene
             list.clear();
         }
     }
+
     /**
      * 所有数据解析完成了 都会来调用
      *
@@ -64,6 +66,7 @@ public class ExcelListener<T, B extends DemoDAO<T>> extends AnalysisEventListene
         saveData();
         LOGGER.info("所有数据解析完成！");
     }
+
     /**
      * 加上存储数据库
      */

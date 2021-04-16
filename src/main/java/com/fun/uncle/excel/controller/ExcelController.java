@@ -4,7 +4,7 @@ import com.alibaba.excel.EasyExcel;
 import com.fun.uncle.excel.dao.DemoDAO;
 import com.fun.uncle.excel.dto.ConverterDataDTO;
 import com.fun.uncle.excel.dto.DownloadExcelDTO;
-import com.fun.uncle.excel.dto.IndexOrNameData;
+import com.fun.uncle.excel.dto.IndexOrNameDataDTO;
 import com.fun.uncle.excel.dto.PersonExcelDTO;
 import com.fun.uncle.excel.listener.ExcelListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class ExcelController {
 
     @PostMapping("upload/indexOrNumber")
     public String uploadIndexOrNumber(MultipartFile file) throws IOException {
-        EasyExcel.read(file.getInputStream(), IndexOrNameData.class, new ExcelListener(demoDAO)).sheet().doRead();
+        EasyExcel.read(file.getInputStream(), IndexOrNameDataDTO.class, new ExcelListener(demoDAO)).sheet().doRead();
         return "success";
     }
 

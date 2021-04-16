@@ -4,7 +4,6 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
 import lombok.Data;
 
-import java.util.Date;
 
 /**
  * @Description:
@@ -13,7 +12,7 @@ import java.util.Date;
  * @Version: 0.0.1-SNAPSHOT
  */
 @Data
-public class IndexOrNameData {
+public class IndexOrNameDataDTO {
 
     @ExcelProperty(index = 0)
     private String title;
@@ -25,7 +24,7 @@ public class IndexOrNameData {
     private Integer number;
 
     @ExcelProperty(index = 3)
-    private Double grade;
+    private Integer grade;
 
     @ExcelProperty(index = 4)
     @DateTimeFormat("yyyyMM-dd HH时mm分ss秒")
