@@ -11,17 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @Description:
+ * @Description: 数据解析
  * @Author: Summer
  * @DateTime: 2020/5/7 11:00 上午
  * @Version: 0.0.1-SNAPSHOT
  */
 public class ExcelListener<T, B extends DemoDAO<T>> extends AnalysisEventListener<T> {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ExcelListener.class);
     /**
      * 每隔5条存储数据库，实际使用中可以3000条，然后清理list ，方便内存回收
      */
     private static final int BATCH_COUNT = 20;
+
     List<T> list = new ArrayList<T>();
     /**
      * 假设这个是一个DAO，当然有业务逻辑这个也可以是一个service。当然如果不用存储这个对象没用。
